@@ -17,9 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from hotels import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.IndexTemplateView.as_view(), name='index'),
 
-    path("__debug__/", include("debug_toolbar.urls")),
+    # apps
+    path('hotels/', include('hotels.urls', namespace='hotels')),
 
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
