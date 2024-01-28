@@ -1,0 +1,42 @@
+[
+  {
+    "model": "hotels.amenities",
+    "pk": 1,
+    "fields": {
+      "name": "Free Wi-Fi",
+      "rating": "12.12"
+    }
+  },
+  {
+    "model": "hotels.amenities",
+    "pk": 2,
+    "fields": {
+      "name": "Parking",
+      "rating": "10.12"
+    }
+  },
+  {
+    "model": "hotels.amenities",
+    "pk": 3,
+    "fields": {
+      "name": "Hotel bar",
+      "rating": "5.12"
+    }
+  },
+  {
+    "model": "hotels.amenities",
+    "pk": 4,
+    "fields": {
+      "name": "Pool",
+      "rating": "2.23"
+    }
+  },
+  {
+    "model": "hotels.amenities",
+    "pk": 5,
+    "fields": {
+      "name": "Restaurant",
+      "rating": "12.52"
+    }
+  }
+]

@@ -8,7 +8,7 @@ class Amenities(models.Model):
     rating = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self):
-        return f'<Amenities: {self.name}>'
+        return self.name
 
     class Meta:
         verbose_name = 'Amenity'
@@ -17,15 +17,15 @@ class Amenities(models.Model):
 
 class HotelType(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    count_of_stars = models.PositiveIntegerField(default=0)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'<HotelType: {self.name}>'
+        return self.name
 
 
 class Hotel(models.Model):
     name = models.CharField(max_length=100)
-    count_of_stars = models.PositiveIntegerField(default=0)
     total_rooms = models.PositiveIntegerField(default=0)
     hotel_type = models.ForeignKey(HotelType, on_delete=models.PROTECT)
     amenities = models.ManyToManyField(
@@ -36,10 +36,10 @@ class Hotel(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    owner = models.OneToOneField(to=User, on_delete=models.PROTECT)
+    owner = models.ForeignKey(to=User, on_delete=models.PROTECT)
 
     def __str__(self):
-        return f'<Hotel: {self.name}>'
+        return self.name
 
     class Meta:
         verbose_name = 'Hotel'
@@ -51,7 +51,7 @@ class HotelAmenities(models.Model):
     amenity = models.ForeignKey(to=Amenities, on_delete=models.PROTECT)
 
     def __str__(self):
-        return f'<HotelAmenities: {self.hotel.name} - {self.amenity.name}>'
+        return f'{self.hotel.name} - {self.amenity.name}'
 
 
 class RoomType(models.Model):
@@ -60,7 +60,7 @@ class RoomType(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f'<RoomType: {self.name}>'
+        return self.name
 
 
 class Room(models.Model):
@@ -70,4 +70,17 @@ class Room(models.Model):
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
-        return f'<Room: Number {self.number} - Type: {self.type.name}>'
+        return f'Hotel: {self.hotel.name} - Number {self.number} - Type: {self.type.name}'
+
+
+class HotelRoomsCount(models.Model):
+    hotel = models.ForeignKey(to=Hotel, on_delete=models.PROTECT)
+    room_type = models.ForeignKey(to=RoomType, on_delete=models.PROTECT)
+    count = models.PositiveIntegerField(default=0, null=True)
+
+    def __str__(self):
+        return f'{self.hotel.name} - {self.room_type.name} - {self.count} rooms'
+
+    class Meta:
+        verbose_name = 'Hotel Rooms Count'
+        verbose_name_plural = 'Hotel Rooms Count'

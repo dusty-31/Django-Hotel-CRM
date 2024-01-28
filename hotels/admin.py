@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import HotelType, Hotel, RoomType, Room, Amenities
+from .models import HotelType, Hotel, RoomType, Room, Amenities, HotelAmenities, HotelRoomsCount
 
 
 @admin.register(HotelType)
@@ -25,4 +25,14 @@ class RootAdmin(admin.ModelAdmin):
 
 @admin.register(Amenities)
 class AmenitiesAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(HotelAmenities)
+class HotelAmenitiesAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(HotelRoomsCount)
+class HotelRoomsCountAdmin(admin.ModelAdmin):
     pass
