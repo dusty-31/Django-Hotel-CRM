@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Information about hotel</h1>
+    <h3>Hotel</h3>
+    <ul>
+        <li>name: {{ hotel.name }}</li>
+        <li>owner: {{ hotel.owner }}</li>
+        <li>type: {{ hotel.hotel_type.name }}</li>
+        <li>total rooms: {{ hotel.total_rooms }}</li>
+        <li>free rooms: {{ hotel.free_rooms }}</li>
+        <li>populated rooms: {{ hotel.populated_rooms }}</li>
+    </ul>
+    <h3>Amenities</h3>
+    <ul>
+        {% for hotelamenity in hotel.hotelamenities_set.all %}
+            <li>{{ hotelamenity.amenity.name }}</li>
+        {% endfor %}
+    </ul>
+    <h3>Rooms</h3>
+    {% regroup hotel.room_set.all by type as room_types %}
+
+    {% for room_type in room_types %}
+        <h4>"{{ room_type.grouper.name }}" Rooms</h4>
+        <ul>
+            {% for room in room_type.list %}
+                <li>Number: {{ room.number }}</li>
+                <li>Type: {{ room.type.name }}</li>
+                <li>Price: {{ room.type.price }} $</li>
+                {% if room.is_available %}
+                    <li>Is Available: Yes</li>
+                {% else %}
+                    <li>Is Available: No</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}
