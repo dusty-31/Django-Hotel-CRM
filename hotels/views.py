@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import TemplateView, DetailView
 from django.urls import reverse_lazy
@@ -52,9 +52,3 @@ class HotelDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Hotel CRM - {self.object.name}'
         return context
-
-    def get_object(self, **kwargs) -> Hotel:
-        hotel = get_object_or_404(klass=Hotel, pk=self.kwargs.get('pk'))
-        hotel.free_rooms = hotel.room_set.filter(is_available=True).count()
-        hotel.populated_rooms = hotel.room_set.filter(is_available=False).count()
-        return hotel

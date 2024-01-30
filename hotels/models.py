@@ -26,7 +26,6 @@ class HotelType(models.Model):
 
 class Hotel(models.Model):
     name = models.CharField(max_length=100)
-    total_rooms = models.PositiveIntegerField(default=0)
     hotel_type = models.ForeignKey(HotelType, on_delete=models.PROTECT)
     amenities = models.ManyToManyField(
         to=Amenities,
@@ -44,6 +43,18 @@ class Hotel(models.Model):
     class Meta:
         verbose_name = 'Hotel'
         verbose_name_plural = 'Hotels'
+
+    @property
+    def total_rooms(self):
+        return self.room_set.count()
+
+    @property
+    def free_rooms(self):
+        return self.room_set.filter(is_available=True).count()
+
+    @property
+    def populated_rooms(self):
+        return self.room_set.filter(is_available=False).count()
 
 
 class HotelAmenities(models.Model):
