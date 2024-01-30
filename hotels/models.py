@@ -58,7 +58,7 @@ class Hotel(models.Model):
 
 
 class HotelAmenities(models.Model):
-    hotel = models.ForeignKey(to=Hotel, on_delete=models.PROTECT)
+    hotel = models.ForeignKey(to=Hotel, on_delete=models.CASCADE)
     amenity = models.ForeignKey(to=Amenities, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -76,7 +76,7 @@ class RoomType(models.Model):
 
 class Room(models.Model):
     number = models.IntegerField()
-    hotel = models.ForeignKey(to=Hotel, on_delete=models.PROTECT)
+    hotel = models.ForeignKey(to=Hotel, on_delete=models.CASCADE)
     type = models.ForeignKey(to=RoomType, on_delete=models.PROTECT)
     is_available = models.BooleanField(default=True)
 
@@ -85,7 +85,7 @@ class Room(models.Model):
 
 
 class HotelRoomsCount(models.Model):
-    hotel = models.ForeignKey(to=Hotel, on_delete=models.PROTECT)
+    hotel = models.ForeignKey(to=Hotel, on_delete=models.CASCADE)
     room_type = models.ForeignKey(to=RoomType, on_delete=models.PROTECT)
     count = models.PositiveIntegerField(default=0, null=True)
 
