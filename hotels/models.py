@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from users.models import User
 
@@ -55,6 +56,9 @@ class Hotel(models.Model):
     @property
     def populated_rooms(self):
         return self.room_set.filter(is_available=False).count()
+
+    def get_absolute_url(self):
+        return reverse(viewname='hotels:detail', kwargs={'pk': self.pk})
 
 
 class HotelAmenities(models.Model):

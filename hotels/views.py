@@ -1,8 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView, TemplateView, UpdateView
+from django.views.generic import DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from .forms import HotelForm
 from .models import Hotel
@@ -18,7 +21,7 @@ class IndexTemplateView(TemplateView):
         return context
 
 
-class HotelCreateView(View):
+class HotelCreateView(LoginRequiredMixin, View):
     template_name = 'hotels/form.html'
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -44,7 +47,7 @@ class HotelCreateView(View):
         return render(request=request, template_name=self.template_name, context=context)
 
 
-class HotelDetailView(DetailView):
+class HotelDetailView(LoginRequiredMixin, DetailView):
     model = Hotel
     template_name = 'hotels/hotel.html'
     context_object_name = 'hotel'
@@ -81,3 +84,37 @@ class HotelUpdateView(UpdateView):
             form.fields[count_field_name].initial = room_type_count.count
 
         return form
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.get_object().owner != request.user:
+            raise PermissionDenied('You do not have permission to edit this hotel.')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class HotelDeleteView(LoginRequiredMixin, DeleteView):
+    model = Hotel
+    template_name = 'hotels/delete.html'
+    context_object_name = 'hotel'
+    success_url = reverse_lazy('hotels:list')
+
+    def delete(self, request, *args, **kwargs):
+        if self.get_object().owner != self.request.user:
+            raise PermissionDenied("You are not the owner of this hotel.")
+        success_url = self.get_success_url()
+        self.get_object().delete()
+        return redirect(success_url)
+
+
+class HotelListView(LoginRequiredMixin, ListView):
+    model = Hotel
+    template_name = 'hotels/list.html'
+    context_object_name = 'hotels'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Hotel CRM - Hotels'
+        return context
+
+    def get_queryset(self) -> QuerySet[Hotel]:
+        return Hotel.objects.filter(owner=self.request.user)

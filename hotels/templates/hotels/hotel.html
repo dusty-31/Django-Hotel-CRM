@@ -4,7 +4,7 @@
     <h1>Information about hotel</h1>
     <h3>
         <a href="{% url 'hotels:update' hotel.id %}">Update</a>
-        <a href="#">Delete</a>
+        <a href="{% url 'hotels:delete' hotel.id %}">Delete</a>
     </h3>
     <h3>Hotel</h3>
     <ul>
