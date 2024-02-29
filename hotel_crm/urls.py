@@ -25,5 +25,7 @@ urlpatterns = [
     # apps
     path('hotels/', include('hotels.urls', namespace='hotels')),
     path('users/', include('users.urls', namespace='users')),
+    path('customers/', include('customers.urls', namespace='customers')),
+    # debug toolbar
     path('__debug__/', include('debug_toolbar.urls')),
 ]
