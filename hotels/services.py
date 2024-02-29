@@ -1,15 +1,5 @@
-from django.http import HttpRequest
-
 from .forms import HotelForm
 from .models import Hotel, HotelRoomsCount, Room, RoomType
-
-
-def save_hotel(request: HttpRequest, form: HotelForm) -> Hotel:
-    hotel = form.save(commit=False)
-    hotel.owner = request.user
-    hotel.save()
-    form.save_m2m()
-    return hotel
 
 
 def get_count_field_name(room_type: RoomType) -> str:

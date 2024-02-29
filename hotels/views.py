@@ -1,15 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import DeleteView, DetailView, ListView, TemplateView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from .forms import HotelForm
 from .models import Hotel
-from .services import create_hotel_rooms_count, create_rooms_for_hotel, save_hotel
+from .services import create_hotel_rooms_count, create_rooms_for_hotel
 
 
 class IndexTemplateView(TemplateView):
@@ -21,30 +19,26 @@ class IndexTemplateView(TemplateView):
         return context
 
 
-class HotelCreateView(LoginRequiredMixin, View):
+class HotelCreateView(LoginRequiredMixin, CreateView):
+    form_class = HotelForm
     template_name = 'hotels/form.html'
 
-    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        context = {
-            'title': 'Hotel CRM - Create Hotel',
-            'form': HotelForm(),
-            'submit_value': 'Create',
-        }
-        return render(request=request, template_name=self.template_name, context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Hotel CRM - Create Hotel'
+        context['submit_value'] = 'Create'
+        return context
 
-    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        form = HotelForm(request.POST)
-        if form.is_valid():
-            hotel = save_hotel(request=request, form=form)
-            create_hotel_rooms_count(hotel=hotel, form=form)
-            create_rooms_for_hotel(hotel=hotel)
-            return redirect(reverse_lazy('hotels:detail', kwargs={'pk': hotel.pk}))
+    def get_success_url(self):
+        return reverse_lazy('hotels:detail', kwargs={'pk': self.object.pk})
 
-        context = {
-            'title': 'Hotel CRM - Create Hotel',
-            'form': form,
-        }
-        return render(request=request, template_name=self.template_name, context=context)
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        response = super().form_valid(form)
+        hotel = self.object
+        create_hotel_rooms_count(hotel=hotel, form=form)
+        create_rooms_for_hotel(hotel=hotel)
+        return response
 
 
 class HotelDetailView(LoginRequiredMixin, DetailView):
