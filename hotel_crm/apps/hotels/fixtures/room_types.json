@@ -1,0 +1,29 @@
+[
+  {
+    "model": "hotels.roomtype",
+    "pk": 1,
+    "fields": {
+      "name": "Single Room",
+      "max_occupancy": 1,
+      "price": "100.00"
+    }
+  },
+  {
+    "model": "hotels.roomtype",
+    "pk": 2,
+    "fields": {
+      "name": "Double Room",
+      "max_occupancy": 2,
+      "price": "150.00"
+    }
+  },
+  {
+    "model": "hotels.roomtype",
+    "pk": 3,
+    "fields": {
+      "name": "President Room",
+      "max_occupancy": 3,
+      "price": "450.00"
+    }
+  }
+]

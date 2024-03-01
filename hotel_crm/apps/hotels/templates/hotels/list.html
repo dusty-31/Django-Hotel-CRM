@@ -1,0 +1,12 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    {% for hotel in hotels %}
+        <p>
+            Hotel: {{ hotel.name }} <br>
+            Type: {{ hotel.hotel_type }} <br>
+            <a href="{{ hotel.get_absolute_url }}">Detail</a>
+        </p>
+        <hr>
+    {% endfor %}
+{% endblock %}

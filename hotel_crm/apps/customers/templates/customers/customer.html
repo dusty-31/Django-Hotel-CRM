@@ -1,0 +1,11 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    <h1>Customer {{ customer.first_name }} {{ customer.last_name }}</h1>
+    <a href="{% url 'customer:update' customer.id %}">Update</a>
+    <p>First Name: {{ customer.first_name }}</p>
+    <p>Last Name: {{ customer.last_name }}</p>
+    <p>Phone number: {{ customer.phone_number }}</p>
+    <p>Passport number: {{ customer.passport_number }}</p>
+    <p>Status: {% if customer.status %} Inhabited {% else %} Uninhabited {% endif %}</p>
+{% endblock %}

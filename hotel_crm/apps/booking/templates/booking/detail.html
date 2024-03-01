@@ -1,0 +1,8 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    <h2>Home</h2>
+    {{ booking.customer.first_name }} {{ booking.customer.last_name }}<br>
+    {{ booking.hotel.name }} <br>
+    {{ booking.room.room_number }} <br>
+{% endblock %}

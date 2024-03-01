@@ -17,15 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from hotels import views
+from hotel_crm.apps.hotels import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.IndexTemplateView.as_view(), name='index'),
     # apps
-    path('hotels/', include('hotels.urls', namespace='hotels')),
-    path('users/', include('users.urls', namespace='users')),
-    path('customers/', include('customers.urls', namespace='customers')),
+    path('hotels/', include('hotel_crm.apps.hotels.urls', namespace='hotels')),
+    path('users/', include('hotel_crm.apps.users.urls', namespace='users')),
+    path('customers/', include('hotel_crm.apps.customers.urls', namespace='customers')),
+    path('booking/', include('hotel_crm.apps.booking.urls', namespace='booking')),
     # debug toolbar
     path('__debug__/', include('debug_toolbar.urls')),
 ]

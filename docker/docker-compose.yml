@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  django:
+    container_name: django
+    build:
+      context: ..
+      dockerfile: docker/images/django/Dockerfile
+    env_file:
+      - envs/django.env
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ../hotel_crm:/src/hotel_crm
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "localhost:8000/admin"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    ports:
+      - "8000:8000"
+  db:
+    container_name: db
+    image: postgres:15.2-alpine
+    env_file:
+      - envs/postgres.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hotel_crm -d hotel_crm"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
