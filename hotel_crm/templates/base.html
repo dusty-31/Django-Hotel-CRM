@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    {% block extra_css %} {% endblock %}
+    {% block extra_js %} {% endblock %}
 </head>
 <body>
 <header>
@@ -13,5 +15,7 @@
     {% endif %}
 </header>
 {% block content %} {% endblock %}
+
+{% block scripts %} {% endblock %}
 </body>
 </html>

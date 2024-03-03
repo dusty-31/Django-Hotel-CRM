@@ -1,3 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.views import View
 from django.views.generic import CreateView, DetailView
 
 from hotel_crm.apps.hotels.models import Hotel, Room
@@ -6,7 +9,7 @@ from .forms import BookingForm
 from .models import Booking
 
 
-class BookingCreateView(CreateView):
+class BookingCreateView(LoginRequiredMixin, CreateView):
     form_class = BookingForm
     template_name = 'booking/form.html'
 
@@ -21,10 +24,15 @@ class BookingCreateView(CreateView):
         user = self.request.user
         form.fields['customer'].queryset = user.customer_set.all()
         form.fields['hotel'].queryset = Hotel.objects.filter(owner=user).prefetch_related('owner')
-        form.fields['room'].queryset = Room.objects.filter(hotel__owner=user, is_available=True).prefetch_related(
-            'hotel', 'type'
-        )
         return form
+
+    def get(self, request, *args, **kwargs):
+        hotel_id = request.GET.get('hotel_id')
+        if hotel_id:
+            rooms = Room.objects.filter(hotel_id=hotel_id, is_available=True).prefetch_related('hotel', 'type')
+            data = {'rooms': {room.id: str(room) for room in rooms}}
+            return JsonResponse(data)
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form: BookingForm):
         form.instance.created_by = self.request.user

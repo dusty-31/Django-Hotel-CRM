@@ -10,4 +10,6 @@ class BookingForm(forms.ModelForm):
         widgets = {
             'check_in': forms.DateInput(attrs={'type': 'date'}),
             'check_out': forms.DateInput(attrs={'type': 'date'}),
+            'hotel': forms.Select(attrs={'id': 'hotel_choice'}),
+            'room': forms.Select(attrs={'id': 'room_choice'}),
         }

@@ -1,5 +1,9 @@
 {% extends 'templates/base.html' %}
 
+{% block extra_js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
 {% block content %}
     <h1>Booking Form</h1>
     <form action="" method="post">
@@ -7,4 +11,30 @@
         {{ form.as_p }}
         <input type="submit" value="Submit">
     </form>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $(document).on('change', '#hotel_choice', function () {
+                var selectedHotelId = $(this).val();
+                $.ajax({
+                    url: '/booking/create/',
+                    data: {'hotel_id': selectedHotelId},
+                    dataType: 'json',
+                    success: function (data) {
+                        var roomChoice = $('#room_choice');
+                        roomChoice.empty();  // Clear existing options
+                        $.each(data.rooms, function (key, value) {
+                            roomChoice.append('<option value="' + key + '">' + value + '</option>');
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('An error occurred:', error);
+                        // You can add error handling logic here, such as displaying an error message.
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
