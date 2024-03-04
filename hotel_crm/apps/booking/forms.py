@@ -13,3 +13,23 @@ class BookingForm(forms.ModelForm):
             'hotel': forms.Select(attrs={'id': 'hotel_choice'}),
             'room': forms.Select(attrs={'id': 'room_choice'}),
         }
+
+    def clean(self):
+        # Check check-in and check-out dates
+        check_in = self.cleaned_data['check_in']
+        check_out = self.cleaned_data['check_out']
+        if check_in >= check_out:
+            raise forms.ValidationError('Check-in date must be before check-out date.')
+
+    def clean_room(self):
+        room_data = self.cleaned_data['room']
+        if not room_data.is_available:
+            raise forms.ValidationError('This room is not available.')
+        return room_data
+
+    def clean_number_of_guests(self):
+        number_of_guests = self.cleaned_data['number_of_guests']
+        room = self.cleaned_data['room']
+        if number_of_guests > room.type.max_occupancy:
+            raise forms.ValidationError('Number of guests exceeds room max occupancy.')
+        return number_of_guests
