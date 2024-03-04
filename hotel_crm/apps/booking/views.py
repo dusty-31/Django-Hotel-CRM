@@ -1,12 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.views.generic import CreateView, DetailView
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import CreateView, DetailView, View
 
 from hotel_crm.apps.hotels.models import Hotel, Room
 
 from .forms import BookingForm
 from .models import Booking
-from .services import change_status_room
+from .services import change_status_customer, change_status_room
 
 
 class BookingCreateView(LoginRequiredMixin, CreateView):
@@ -48,6 +49,7 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
         room_id = form.cleaned_data['room'].id
         room = Room.objects.get(id=room_id)
         change_status_room(room=room, status=False)
+        change_status_customer(customer=form.instance.customer, status=True)
         return response
 
 
@@ -59,3 +61,23 @@ class BookingDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Hotel CRM - Booking Detail'
         return context
+
+
+class BookingDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        booking = get_object_or_404(klass=Booking, pk=kwargs['pk'])
+        context = {
+            'title': 'Hotel CRM - Delete Booking',
+            'booking': booking,
+        }
+        return render(request=request, template_name='booking/delete.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        booking = get_object_or_404(Booking, pk=kwargs['pk'])
+        room = booking.room
+        change_status_room(room=room, status=True)
+        customer = booking.customer
+        change_status_customer(customer=customer, status=False)
+        booking.is_active = False
+        booking.save()
+        return redirect('booking:detail', pk=booking.pk)

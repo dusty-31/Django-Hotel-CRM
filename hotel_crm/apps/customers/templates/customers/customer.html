@@ -7,5 +7,5 @@
     <p>Last Name: {{ customer.last_name }}</p>
     <p>Phone number: {{ customer.phone_number }}</p>
     <p>Passport number: {{ customer.passport_number }}</p>
-    <p>Status: {% if customer.status %} Inhabited {% else %} Uninhabited {% endif %}</p>
+    <p>Status: {% if customer.is_inhabited %} Inhabited {% else %} Uninhabited {% endif %}</p>
 {% endblock %}

@@ -4,7 +4,7 @@
     {% for customer in customers %}
         <p>
             Customer: {{ customer.first_name }} {{ customer.last_name }}<br>
-            Inhabited: {% if customer.status %} Yes {% else %} No {% endif %}<br>
+            Inhabited: {% if customer.is_inhabited %} Yes {% else %} No {% endif %}<br>
             <a href="{{ customer.get_absolute_url }}">Detail</a>
         </p>
         <hr>
