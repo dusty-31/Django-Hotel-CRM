@@ -5,8 +5,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
-from .forms import HotelForm
-from .models import Hotel
+from .forms import HotelForm, RoomForm
+from .models import Hotel, Room
 from .services import create_hotel_rooms_count, create_rooms_for_hotel
 
 
@@ -49,10 +49,11 @@ class HotelDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context['title'] = f'Hotel CRM - {self.object.name}'
+        context['rooms'] = self.object.room_set.all().order_by('number')
         return context
 
 
-class HotelUpdateView(UpdateView):
+class HotelUpdateView(LoginRequiredMixin, UpdateView):
     model = Hotel
     template_name = 'hotels/form.html'
     form_class = HotelForm
@@ -112,3 +113,29 @@ class HotelListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Hotel]:
         return Hotel.objects.filter(owner=self.request.user)
+
+
+class RoomDetailView(LoginRequiredMixin, DetailView):
+    model = Room
+    template_name = 'hotels/room.html'
+    context_object_name = 'room'
+
+    def get_context_data(self, *args, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class RoomUpdateView(LoginRequiredMixin, UpdateView):
+    model = Room
+    template_name = 'hotels/room_form.html'
+    form_class = RoomForm
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Hotel CRM - Update Room #{self.object.number}'
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.object
+        return kwargs

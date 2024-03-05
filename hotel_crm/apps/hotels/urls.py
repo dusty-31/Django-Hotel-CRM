@@ -10,4 +10,6 @@ urlpatterns = [
     path('update/<int:pk>', views.HotelUpdateView.as_view(), name='update'),
     path('delete/<int:pk>', views.HotelDeleteView.as_view(), name='delete'),
     path('list/', views.HotelListView.as_view(), name='list'),
+    path('room/<int:pk>', views.RoomDetailView.as_view(), name='room_detail'),
+    path('room/update/<int:pk>', views.RoomUpdateView.as_view(), name='room_update'),
 ]

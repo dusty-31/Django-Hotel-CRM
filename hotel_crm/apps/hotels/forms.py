@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Amenities, Hotel, HotelType, RoomType
+from .models import Amenities, Hotel, HotelType, Room, RoomType
 
 
 class HotelForm(forms.ModelForm):
@@ -34,4 +34,14 @@ class HotelForm(forms.ModelForm):
             label=f'Number of {room_type.name} rooms',
             required=False,
             min_value=1,
+        )
+
+
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = (
+            'number',
+            'type',
+            'is_available',
         )

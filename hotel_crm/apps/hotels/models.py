@@ -87,6 +87,9 @@ class Room(models.Model):
     def __str__(self):
         return f'Hotel: {self.hotel.name} - Number {self.number} - Type: {self.type.name}'
 
+    def get_absolute_url(self):
+        return reverse(viewname='hotels:room_detail', kwargs={'pk': self.pk})
+
 
 class HotelRoomsCount(models.Model):
     hotel = models.ForeignKey(to=Hotel, on_delete=models.CASCADE)

@@ -1,0 +1,12 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    <a href="{% url 'hotels:detail' room.hotel.id %}">Back to the room list</a>
+    <h2>Room {{ room.number }}</h2>
+    <p>
+        <a href="{% url 'hotels:room_update' room.id %}">Update</a>
+    </p>
+    <p>Hotel: {{ room.hotel }}</p>
+    <p>Room type: {{ room.type }}</p>
+    <p>Status: {% if room.is_available %} Available {% else %} Not Available {% endif %}</p>
+{% endblock %}
