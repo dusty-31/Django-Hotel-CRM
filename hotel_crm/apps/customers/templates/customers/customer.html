@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Customer {{ customer.first_name }} {{ customer.last_name }}</h1>
-    <a href="{% url 'customer:update' customer.id %}">Update</a>
+    <a href="{% url 'customers:update' customer.id %}">Update</a>
     <p>First Name: {{ customer.first_name }}</p>
     <p>Last Name: {{ customer.last_name }}</p>
     <p>Phone number: {{ customer.phone_number }}</p>

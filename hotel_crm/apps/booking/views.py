@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import CreateView, DetailView, View
+from django.views.generic import CreateView, DetailView, ListView, View
 
 from hotel_crm.apps.hotels.models import Hotel, Room
 
@@ -81,3 +81,17 @@ class BookingDeleteView(View):
         booking.is_active = False
         booking.save()
         return redirect('booking:detail', pk=booking.pk)
+
+
+class BookingListView(LoginRequiredMixin, ListView):
+    model = Booking
+    template_name = 'booking/list.html'
+    context_object_name = 'bookings'
+
+    def get_queryset(self):
+        return Booking.objects.filter(created_by=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Hotel CRM - Booking List'
+        return context
