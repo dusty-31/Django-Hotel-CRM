@@ -1,5 +1,8 @@
 from django import forms
 
+from hotel_crm.apps.customers.models import Customer
+from hotel_crm.apps.hotels.models import Hotel, Room
+
 from .models import Booking
 
 
@@ -33,3 +36,46 @@ class BookingForm(forms.ModelForm):
         if number_of_guests > room.type.max_occupancy:
             raise forms.ValidationError('Number of guests exceeds room max occupancy.')
         return number_of_guests
+
+
+class BookingWithCustomerForm(forms.Form):
+    # Customer fields
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    phone_number = forms.CharField(max_length=15)
+    gender = forms.ChoiceField(choices=Customer.GENDER_CHOICES)
+    passport_number = forms.CharField(max_length=14)
+    disability = forms.BooleanField(required=False)
+
+    # Booking fields
+    hotel = forms.ModelChoiceField(
+        queryset=Hotel.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'id': 'hotel_choice',
+            }
+        ),
+    )
+    room = forms.ModelChoiceField(
+        queryset=Room.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'id': 'room_choice',
+            }
+        ),
+    )
+    check_in = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                'type': 'date',
+            },
+        ),
+    )
+    check_out = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                'type': 'date',
+            },
+        ),
+    )
+    number_of_guests = forms.IntegerField()

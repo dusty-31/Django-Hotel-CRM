@@ -3,9 +3,10 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, DetailView, ListView, View
 
+from hotel_crm.apps.customers.models import Customer
 from hotel_crm.apps.hotels.models import Hotel, Room
 
-from .forms import BookingForm
+from .forms import BookingForm, BookingWithCustomerForm
 from .models import Booking
 from .services import change_status_customer, change_status_room
 
@@ -95,3 +96,48 @@ class BookingListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Hotel CRM - Booking List'
         return context
+
+
+class BookingWithCustomerView(View):
+    def get(self, request, *args, **kwargs):
+        hotel_id = request.GET.get('hotel_id')
+        form = BookingWithCustomerForm()
+
+        if hotel_id:
+            rooms = Room.objects.filter(hotel_id=hotel_id, is_available=True).prefetch_related('hotel', 'type')
+            data = {'rooms': {room.id: str(room) for room in rooms}}
+            return JsonResponse(data)
+        else:
+            form.fields['room'].queryset = Room.objects.none()
+        context = {
+            'title': 'Hotel CRM - Create Booking with Customer',
+            'form': form,
+        }
+        return render(request=request, template_name='booking/with_customer_form.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = BookingWithCustomerForm(request.POST)
+        if form.is_valid():
+            customer = Customer.objects.create(
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+                phone_number=form.cleaned_data['phone_number'],
+                gender=form.cleaned_data['gender'],
+                passport_number=form.cleaned_data['passport_number'],
+                disability=form.cleaned_data['disability'],
+                created_by=request.user,
+            )
+            Booking.objects.create(
+                hotel=form.cleaned_data['hotel'],
+                customer=customer,
+                room=form.cleaned_data['room'],
+                check_in=form.cleaned_data['check_in'],
+                check_out=form.cleaned_data['check_out'],
+                number_of_guests=form.cleaned_data['number_of_guests'],
+                created_by=request.user,
+            )
+            room_id = form.cleaned_data['room'].id
+            room = Room.objects.get(id=room_id)
+            change_status_room(room=room, status=False)
+            change_status_customer(customer=customer, status=True)
+        return redirect('booking:list')
