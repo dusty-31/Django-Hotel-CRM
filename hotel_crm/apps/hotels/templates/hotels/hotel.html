@@ -36,6 +36,9 @@
             <li>
                 <a href="{{ room.get_absolute_url }}">Detail</a>
                 <a href="{% url 'hotels:room_update' room.pk %}">Update</a>
+                {% if room.active_booking %}
+                    <a href="{% url 'booking:detail' room.active_booking.pk %}">Booking Detail</a>
+                {% endif %}
             </li>
         </ul>
     {% endfor %}

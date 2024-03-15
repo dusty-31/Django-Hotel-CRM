@@ -90,6 +90,10 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse(viewname='hotels:room_detail', kwargs={'pk': self.pk})
 
+    @property
+    def active_booking(self):
+        return self.booking_set.filter(is_active=True).first()
+
 
 class HotelRoomsCount(models.Model):
     hotel = models.ForeignKey(to=Hotel, on_delete=models.CASCADE)
