@@ -42,3 +42,15 @@ load_fixtures:
 	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/hotel_types.json
 	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/room_types.json
 	@echo "Fixtures loaded successfully"
+
+activate_venv:
+	@echo "Activating virtual environment..."
+	. ../venv/bin/activate
+	@echo "Virtual environment activated"
+
+load_fixtures_local: activate_venv
+	@echo "Loading fixtures..."
+	python manage.py loaddata hotel_crm/apps/hotels/fixtures/amenities.json
+	python manage.py loaddata hotel_crm/apps/hotels/fixtures/hotel_types.json
+	python manage.py loaddata hotel_crm/apps/hotels/fixtures/room_types.json
+	@echo "Fixtures loaded successfully"

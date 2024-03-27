@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os.path
 import socket
 from pathlib import Path
 
@@ -43,7 +43,9 @@ HOTEL_CRM_APPS = [
     'hotel_crm.apps.hotels',
     'hotel_crm.apps.customers',
     'hotel_crm.apps.booking',
+    'hotel_crm.apps.contacts',
 ]
+
 INSTALLED_APPS = HOTEL_CRM_APPS + [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -129,12 +131,13 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'public' / 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Media files
 MEDIA_URL = '/media/'
