@@ -21,7 +21,19 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
         form_class = self.get_form_class()
         user = self.request.user
         hotel_id = self.request.GET.get('hotel_id')
-        form = form_class(hotel_id=hotel_id, created_by=user, **self.get_form_kwargs())
+        customer_id = self.request.GET.get('customer')
+        check_in = self.request.GET.get('check_in')
+        check_out = self.request.GET.get('check_out')
+        number_of_guests = self.request.GET.get('number_of_guests')
+        form = form_class(
+            hotel_id=hotel_id,
+            created_by=user,
+            customer_id=customer_id,
+            check_in=check_in,
+            check_out=check_out,
+            number_of_guests=number_of_guests,
+            **self.get_form_kwargs(),
+        )
         return form
 
     def get(self, request, *args, **kwargs):

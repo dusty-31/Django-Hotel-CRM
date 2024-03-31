@@ -9,9 +9,4 @@ urlpatterns = [
     path('<int:pk>/', views.BookingDetailView.as_view(), name='detail'),
     path('delete/<int:pk>/', views.BookingDeleteView.as_view(), name='delete'),
     path('list/', views.BookingListView.as_view(), name='list'),
-    path(
-        'create_booking_with_customer/',
-        views.BookingWithCustomerView.as_view(),
-        name='create_booking_with_customer',
-    ),
 ]

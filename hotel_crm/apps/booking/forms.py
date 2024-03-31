@@ -1,29 +1,51 @@
 from django import forms
 
-from hotel_crm.apps.hotels.models import Hotel
-
 from .models import Booking
-from .selectors import get_available_rooms_by_hotel_id
+from .selectors import get_available_hotels_by_dates, get_available_rooms
 
 
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['check_in', 'check_out', 'number_of_guests', 'hotel', 'customer', 'room']
+        fields = ['customer', 'check_in', 'check_out', 'number_of_guests', 'hotel', 'room']
         widgets = {
-            'check_in': forms.DateInput(attrs={'type': 'date'}),
-            'check_out': forms.DateInput(attrs={'type': 'date'}),
+            'check_in': forms.DateInput(attrs={'id': 'check_in', 'type': 'date'}),
+            'check_out': forms.DateInput(attrs={'id': 'check_out', 'type': 'date'}),
+            'number_of_guests': forms.NumberInput(attrs={'id': 'number_of_guests'}),
             'hotel': forms.Select(attrs={'id': 'hotel_choice'}),
             'room': forms.Select(attrs={'id': 'room_choice'}),
         }
 
-    def __init__(self, created_by, *args, hotel_id=None, **kwargs):
+    def __init__(
+        self,
+        created_by,
+        customer_id,
+        *args,
+        hotel_id=None,
+        check_in=None,
+        check_out=None,
+        number_of_guests=None,
+        **kwargs,
+    ):
         initial_values = kwargs.get('initial', {})
         initial_values.setdefault('hotel', hotel_id)
+        initial_values.setdefault('customer', customer_id)
+        initial_values.setdefault('check_in', check_in)
+        initial_values.setdefault('check_out', check_out)
+        initial_values.setdefault('number_of_guests', number_of_guests)
+
         super(BookingForm, self).__init__(*args, **kwargs)
+
         self.created_by = created_by
-        self.fields['hotel'].queryset = Hotel.objects.filter(owner=created_by)
-        self.fields['room'].queryset = get_available_rooms_by_hotel_id(hotel_id=hotel_id, order_by=['number', 'type'])
+        self.fields['hotel'].queryset = get_available_hotels_by_dates(
+            owner=created_by,
+            check_in=check_in,
+            check_out=check_out,
+            order_by=['name'],
+        )
+        self.fields['room'].queryset = get_available_rooms(
+            hotel_id=hotel_id, number_of_guests=number_of_guests, order_by=['number', 'type']
+        )
 
     def save(self, commit=True):
         booking = super(BookingForm, self).save(commit=False)

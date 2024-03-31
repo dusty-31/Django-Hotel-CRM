@@ -11,7 +11,7 @@ class CustomerCreateView(LoginRequiredMixin, CreateView):
     template_name = 'customers/form.html'
 
     def get_success_url(self):
-        return reverse_lazy('customers:detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('booking:create') + f'?customer={self.object.pk}'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

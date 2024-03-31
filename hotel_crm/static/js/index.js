@@ -22,4 +22,31 @@ function selectHotel(event) {
     }
 }
 
+function selectCheckIn(event) {
+    if (event.target.value !== '') {
+        addQueryParam('check_in', event.target.value);
+    } else {
+        removeQueryParam('check_in');
+    }
+}
+
+function selectCheckOut(event) {
+    if (event.target.value !== '') {
+        addQueryParam('check_out', event.target.value);
+    } else {
+        removeQueryParam('check_out');
+    }
+}
+
+function selectNumberOfGuest(event) {
+    if (event.target.value !== '') {
+        addQueryParam('number_of_guests', event.target.value);
+    } else {
+        removeQueryParam('number_of_guests');
+    }
+}
+
 window.document.getElementById('hotel_choice').addEventListener('change', selectHotel);
+window.document.getElementById('check_in').addEventListener('change', selectCheckIn);
+window.document.getElementById('check_out').addEventListener('change', selectCheckOut);
+window.document.getElementById('number_of_guests').addEventListener('input', selectNumberOfGuest);
