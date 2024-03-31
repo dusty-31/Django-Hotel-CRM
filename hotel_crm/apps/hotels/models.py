@@ -51,11 +51,11 @@ class Hotel(models.Model):
 
     @property
     def free_rooms(self):
-        return self.room_set.filter(is_available=True).count()
+        return sum(room.is_available() for room in self.room_set.all())
 
     @property
     def populated_rooms(self):
-        return self.room_set.filter(is_available=False).count()
+        return sum(room.is_available() is False for room in self.room_set.all())
 
     def get_absolute_url(self):
         return reverse(viewname='hotels:detail', kwargs={'pk': self.pk})
@@ -82,13 +82,16 @@ class Room(models.Model):
     number = models.IntegerField()
     hotel = models.ForeignKey(to=Hotel, on_delete=models.CASCADE)
     type = models.ForeignKey(to=RoomType, on_delete=models.PROTECT)
-    is_available = models.BooleanField(default=True)
 
     def __str__(self):
         return f'Hotel: {self.hotel.name} - Number {self.number} - Type: {self.type.name}'
 
     def get_absolute_url(self):
         return reverse(viewname='hotels:room_detail', kwargs={'pk': self.pk})
+
+    def is_available(self):
+        active_bookings = self.booking_set.filter(is_active=True)
+        return not active_bookings.exists()
 
     @property
     def active_booking(self):

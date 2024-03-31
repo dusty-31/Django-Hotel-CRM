@@ -43,5 +43,4 @@ class RoomForm(forms.ModelForm):
         fields = (
             'number',
             'type',
-            'is_available',
         )
