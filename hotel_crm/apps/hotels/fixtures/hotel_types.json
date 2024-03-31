@@ -1,0 +1,47 @@
+[
+  {
+    "model": "hotels.hoteltype",
+    "pk": 1,
+    "fields": {
+      "name": "Budget Hotel",
+      "count_of_stars": 1,
+      "description": "Description for Budget Hotel."
+    }
+  },
+  {
+    "model": "hotels.hoteltype",
+    "pk": 2,
+    "fields": {
+      "name": "Mid-Range Hotel",
+      "count_of_stars": 2,
+      "description": "Description for Mid-Range Hotels."
+    }
+  },
+  {
+    "model": "hotels.hoteltype",
+    "pk": 3,
+    "fields": {
+      "name": "Luxury Hotel",
+      "count_of_stars": 3,
+      "description": "Description for Luxury Hotel."
+    }
+  },
+  {
+    "model": "hotels.hoteltype",
+    "pk": 4,
+    "fields": {
+      "name": "Boutique Hotel",
+      "count_of_stars": 4,
+      "description": "Description for Boutique Hotel."
+    }
+  },
+  {
+    "model": "hotels.hoteltype",
+    "pk": 5,
+    "fields": {
+      "name": "Resort Hotel",
+      "count_of_stars": 5,
+      "description": "Description for Resort Hotel."
+    }
+  }
+]

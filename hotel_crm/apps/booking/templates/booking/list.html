@@ -1,0 +1,50 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    <h2>Active records</h2>
+    <hr>
+    {% for booking in bookings %}
+        {% if booking.is_active %}
+            <h4>Record #{{ booking.id }}</h4>
+            Detail: <a href="{{ booking.get_absolute_url }}">link</a>
+            <p>
+                <strong>Hotel:</strong>
+                <a href="{{ booking.hotel.get_absolute_url }}">
+                    {{ booking.room.hotel.name }}
+                </a><br>
+                <strong>Customer: </strong>
+                <a href="{{ booking.customer.get_absolute_url }}">
+                    {{ booking.customer.first_name }} {{ booking.customer.last_name }}
+                </a><br>
+                <strong>Room:</strong>
+                <a href="{{ booking.room.get_absolute_url }}">
+                    Room #{{ booking.room.number }}
+                </a><br>
+            </p>
+            <hr>
+        {% endif %}
+    {% endfor %}
+    <h2>Archived records</h2>
+    <hr>
+    {% for booking in bookings %}
+        {% if not booking.is_active %}
+            <h4>Record #{{ booking.id }}</h4>
+            Detail: <a href="{{ booking.get_absolute_url }}">link</a>
+            <p>
+                <strong>Hotel:</strong>
+                <a href="{{ booking.hotel.get_absolute_url }}">
+                    {{ booking.room.hotel.name }}
+                </a><br>
+                <strong>Customer: </strong>
+                <a href="{{ booking.customer.get_absolute_url }}">
+                    {{ booking.customer.first_name }} {{ booking.customer.last_name }}
+                </a><br>
+                <strong>Room:</strong>
+                <a href="{{ booking.room.get_absolute_url }}">
+                    Room #{{ booking.room.number }}
+                </a><br>
+            </p>
+            <hr>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

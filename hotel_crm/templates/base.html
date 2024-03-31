@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    {% block extra_css %} {% endblock %}
+    {% block extra_js %} {% endblock %}
+</head>
+<body>
+<header>
+    {% if user.is_authenticated %}
+        {{ user.username }}
+    {% else %}
+        Not logged in
+    {% endif %}
+</header>
+{% block content %} {% endblock %}
+
+{% block scripts %} {% endblock %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    <h2>Booking record #{{ booking.pk }}</h2>
+    <h3>
+        <a href="{% url 'booking:delete' booking.pk %}">Delete</a><br>
+    </h3>
+    Customer name: {{ booking.customer.first_name }} {{ booking.customer.last_name }}<br>
+    Customer status: {% if booking.customer.is_inhabited %} Inhabited {% else %} Not inhabited {% endif %} <br>
+    Hotel: {{ booking.hotel.name }} <br>
+    Room number: {{ booking.room.number }} <br>
+    Check-in: {{ booking.check_in }} <br>
+    Check-out: {{ booking.check_out }} <br>
+    Status: {% if booking.is_active %} Active {% else %} Inactive {% endif %} <br>
+    Room status: {% if booking.room.is_available %} Available {% else %} Not available {% endif %}<br>
+{% endblock %}

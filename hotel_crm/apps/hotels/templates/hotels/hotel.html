@@ -1,0 +1,45 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    <h1>Information about hotel</h1>
+    <h3>
+        <a href="{% url 'hotels:update' hotel.id %}">Update</a>
+        <a href="{% url 'hotels:delete' hotel.id %}">Delete</a>
+    </h3>
+    <h3>Hotel</h3>
+    <ul>
+        <li>name: {{ hotel.name }}</li>
+        <li>owner: {{ hotel.owner }}</li>
+        <li>type: {{ hotel.hotel_type.name }}</li>
+        <li>total rooms: {{ hotel.total_rooms }}</li>
+        <li>free rooms: {{ hotel.free_rooms }}</li>
+        <li>populated rooms: {{ hotel.populated_rooms }}</li>
+    </ul>
+    <h3>Amenities</h3>
+    <ul>
+        {% for hotelamenity in hotel.hotelamenities_set.all %}
+            <li>{{ hotelamenity.amenity.name }}</li>
+        {% endfor %}
+    </ul>
+    <h3>Rooms</h3>
+    {% for room in rooms %}
+        <h4>"{{ room.type.name }}" Rooms</h4>
+        <ul>
+            <li>Number: {{ room.number }}</li>
+            <li>Type: {{ room.type.name }}</li>
+            <li>Price: {{ room.type.price }} $</li>
+            {% if room.is_available %}
+                <li>Is Available: Yes</li>
+            {% else %}
+                <li>Is Available: No</li>
+            {% endif %}
+            <li>
+                <a href="{{ room.get_absolute_url }}">Detail</a>
+                <a href="{% url 'hotels:room_update' room.pk %}">Update</a>
+                {% if room.active_booking %}
+                    <a href="{% url 'booking:detail' room.active_booking.pk %}">Booking Detail</a>
+                {% endif %}
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock %}
