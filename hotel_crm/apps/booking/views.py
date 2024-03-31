@@ -4,7 +4,7 @@ from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from .forms import BookingForm
 from .models import Booking
-from .services import change_status_customer, change_status_room
+from .services import change_status_customer
 
 
 class BookingCreateView(LoginRequiredMixin, CreateView):
@@ -41,8 +41,6 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form: BookingForm):
         response = super().form_valid(form)
-        room = form.cleaned_data['room']
-        change_status_room(room=room, status=False)
         change_status_customer(customer=form.instance.customer, status=True)
         return response
 
@@ -73,8 +71,6 @@ class BookingDeleteView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         booking = get_object_or_404(Booking, pk=kwargs['pk'])
-        room = booking.room
-        change_status_room(room=room, status=True)
         customer = booking.customer
         change_status_customer(customer=customer, status=False)
         booking.is_active = False
