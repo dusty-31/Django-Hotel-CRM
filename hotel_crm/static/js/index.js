@@ -24,6 +24,12 @@ function selectHotel(event) {
 
 function selectCheckIn(event) {
     if (event.target.value !== '') {
+        let checkOutInput = window.document.getElementById('check_out');
+        if (checkOutInput.value !== '' && event.target.value > checkOutInput.value) {
+            alert("Check-in date cannot be after check-out date!");
+            removeQueryParam('check_in');
+            return;
+        }
         addQueryParam('check_in', event.target.value);
     } else {
         removeQueryParam('check_in');
@@ -32,6 +38,12 @@ function selectCheckIn(event) {
 
 function selectCheckOut(event) {
     if (event.target.value !== '') {
+        let checkInInput = window.document.getElementById('check_in');
+        if (checkInInput.value !== '' && event.target.value < checkInInput.value) {
+            alert("Check-out date cannot be before check-in date!");
+            removeQueryParam('check_out');
+            return;
+        }
         addQueryParam('check_out', event.target.value);
     } else {
         removeQueryParam('check_out');
