@@ -41,6 +41,10 @@ load_fixtures:
 	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/amenities.json
 	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/hotel_types.json
 	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/room_types.json
+	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/hotels.json
+	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/hotels_amenities.json
+	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/hotels_rooms_count.json
+	docker-compose -f docker/docker-compose.yml run --rm django python manage.py loaddata apps/hotels/fixtures/rooms.json
 	@echo "Fixtures loaded successfully"
 
 activate_venv:
@@ -53,4 +57,8 @@ load_fixtures_local: activate_venv
 	python manage.py loaddata hotel_crm/apps/hotels/fixtures/amenities.json
 	python manage.py loaddata hotel_crm/apps/hotels/fixtures/hotel_types.json
 	python manage.py loaddata hotel_crm/apps/hotels/fixtures/room_types.json
+	python manage.py loaddata hotel_crm/apps/hotels/fixtures/hotels.json
+	python manage.py loaddata hotel_crm/apps/hotels/fixtures/hotels_amenities.json
+	python manage.py loaddata hotel_crm/apps/hotels/fixtures/hotels_rooms_count.json
+	python manage.py loaddata hotel_crm/apps/hotels/fixtures/rooms.json
 	@echo "Fixtures loaded successfully"

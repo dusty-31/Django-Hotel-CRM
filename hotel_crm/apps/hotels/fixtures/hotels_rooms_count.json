@@ -1,0 +1,83 @@
+[
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 1,
+    "fields": {
+      "hotel": 1,
+      "room_type": 1,
+      "count": 5
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 2,
+    "fields": {
+      "hotel": 1,
+      "room_type": 2,
+      "count": 5
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 3,
+    "fields": {
+      "hotel": 1,
+      "room_type": 3,
+      "count": 0
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 4,
+    "fields": {
+      "hotel": 2,
+      "room_type": 1,
+      "count": 10
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 5,
+    "fields": {
+      "hotel": 2,
+      "room_type": 2,
+      "count": 10
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 6,
+    "fields": {
+      "hotel": 2,
+      "room_type": 3,
+      "count": 3
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 7,
+    "fields": {
+      "hotel": 3,
+      "room_type": 1,
+      "count": 20
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 8,
+    "fields": {
+      "hotel": 3,
+      "room_type": 2,
+      "count": 20
+    }
+  },
+  {
+    "model": "hotels.hotelroomscount",
+    "pk": 9,
+    "fields": {
+      "hotel": 3,
+      "room_type": 3,
+      "count": 6
+    }
+  }
+]
