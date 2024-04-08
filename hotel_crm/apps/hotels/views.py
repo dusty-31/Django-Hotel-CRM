@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet
+from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
@@ -23,13 +24,13 @@ class HotelCreateView(LoginRequiredMixin, CreateView):
     form_class = HotelForm
     template_name = 'hotels/form.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context['title'] = 'Hotel CRM - Create Hotel'
         context['submit_value'] = 'Create'
         return context
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy('hotels:detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
@@ -80,7 +81,7 @@ class HotelUpdateView(LoginRequiredMixin, UpdateView):
 
         return form
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: HttpRequest, *args, **kwargs):
         if self.get_object().owner != request.user:
             raise PermissionDenied('You do not have permission to edit this hotel.')
         return super().dispatch(request, *args, **kwargs)
@@ -92,7 +93,7 @@ class HotelDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'hotel'
     success_url = reverse_lazy('hotels:list')
 
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request: HttpRequest, *args, **kwargs):
         if self.get_object().owner != self.request.user:
             raise PermissionDenied("You are not the owner of this hotel.")
         success_url = self.get_success_url()

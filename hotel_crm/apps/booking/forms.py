@@ -47,7 +47,7 @@ class BookingForm(forms.ModelForm):
             hotel_id=hotel_id, number_of_guests=number_of_guests, order_by=['number', 'type']
         )
 
-    def save(self, commit=True):
+    def save(self, commit=True) -> Booking:
         booking = super(BookingForm, self).save(commit=False)
         booking.created_by = self.created_by
         if commit:

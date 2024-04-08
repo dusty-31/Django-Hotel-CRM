@@ -1,0 +1,74 @@
+[
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 1,
+    "fields": {
+      "hotel": 1,
+      "amenity": 1
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 2,
+    "fields": {
+      "hotel": 2,
+      "amenity": 1
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 3,
+    "fields": {
+      "hotel": 2,
+      "amenity": 2
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 4,
+    "fields": {
+      "hotel": 2,
+      "amenity": 5
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 5,
+    "fields": {
+      "hotel": 3,
+      "amenity": 1
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 6,
+    "fields": {
+      "hotel": 3,
+      "amenity": 2
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 7,
+    "fields": {
+      "hotel": 3,
+      "amenity": 3
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 8,
+    "fields": {
+      "hotel": 3,
+      "amenity": 4
+    }
+  },
+  {
+    "model": "hotels.hotelamenities",
+    "pk": 9,
+    "fields": {
+      "hotel": 3,
+      "amenity": 5
+    }
+  }
+]
