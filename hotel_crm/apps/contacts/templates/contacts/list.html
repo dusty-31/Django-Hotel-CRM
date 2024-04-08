@@ -1,0 +1,14 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+    <h1>Customer Phone Book</h1>
+    <ul>
+        {% for contact in contacts %}
+            <li>
+                {{ contact.first_name }} {{ contact.last_name }} - {{ contact.phone_number }} -
+                Status: {{ contact.is_inhabited }}
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+{% endblock %}

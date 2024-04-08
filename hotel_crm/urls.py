@@ -27,6 +27,7 @@ urlpatterns = [
     path('users/', include('hotel_crm.apps.users.urls', namespace='users')),
     path('customers/', include('hotel_crm.apps.customers.urls', namespace='customers')),
     path('booking/', include('hotel_crm.apps.booking.urls', namespace='booking')),
+    path('contacts/', include('hotel_crm.apps.contacts.urls', namespace='contacts')),
     # debug toolbar
     path('__debug__/', include('debug_toolbar.urls')),
 ]
