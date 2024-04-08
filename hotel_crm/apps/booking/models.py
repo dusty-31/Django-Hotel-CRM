@@ -13,8 +13,8 @@ class Booking(models.Model):
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name='bookings')
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse(viewname='booking:detail', kwargs={'pk': self.id})
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'ID: {self.id} | {self.hotel} - {self.customer.first_name} {self.customer.last_name} | Created by {self.created_by}'
